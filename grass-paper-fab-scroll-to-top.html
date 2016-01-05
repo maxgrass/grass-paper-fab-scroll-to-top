@@ -1,0 +1,45 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+<!--
+##### Example
+
+    <grass-paper-fab-scroll-to-top></grass-paper-fab-scroll-to-top>
+
+@element grass-paper-fab-scroll-to-top
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module name="grass-paper-fab-scroll-to-top">
+    <style>
+    </style>
+    <template>
+        <paper-fab id="fab" icon="expand-less" title="To top"></paper-fab>
+    </template>
+    <script>
+        var _duration = 500,
+            scrollTop = function(duration) {
+                var __duration = _duration || duration,
+                    scrollStep = -window.scrollY / (__duration / 15),
+                    scrollInterval = setInterval(function() {
+                        if (window.scrollY != 0) {
+                            window.scrollBy(0, scrollStep);
+                        } else {
+                            clearInterval(scrollInterval);
+                        }
+                    }, 15);
+
+            };
+
+        Polymer({
+            is: 'grass-paper-fab-scroll-to-top',
+            scrollToTop: function(duration) {
+                scrollTop(duration);
+            },
+            listeners: {
+                tap: 'scrollToTop'
+            }
+        });
+    </script>
+</dom-module>
