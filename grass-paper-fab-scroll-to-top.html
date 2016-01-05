@@ -19,9 +19,8 @@
     </template>
     <script>
         var _duration = 500,
-            scrollTop = function(duration) {
-                var __duration = _duration || duration,
-                    scrollStep = -window.scrollY / (__duration / 15),
+            scrollTop = function(evt) {
+                var scrollStep = -window.scrollY / (_duration / 15),
                     scrollInterval = setInterval(function() {
                         if (window.scrollY != 0) {
                             window.scrollBy(0, scrollStep);
@@ -34,8 +33,8 @@
 
         Polymer({
             is: 'grass-paper-fab-scroll-to-top',
-            scrollToTop: function(duration) {
-                scrollTop(duration);
+            scrollToTop: function(evt) {
+                scrollTop(evt);
             },
             listeners: {
                 tap: 'scrollToTop'
