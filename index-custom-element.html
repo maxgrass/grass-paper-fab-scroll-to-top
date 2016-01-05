@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <base href="node_modules/polymer/" target="_blank">
+    <title>grass-paper-fab-scroll-to-top Info</title>
+    <link rel="import" href="../../grass-paper-fab-scroll-to-top.html">
+</head>
+
+<body>
+    <style>
+        p {
+            padding: 50px;
+        }
+
+        #short-with-long-content {
+            max-height: 200px;
+            overflow: scroll;
+        }
+    </style>
+    <div id="short-with-long-content">
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+    </div>
+    <grass-paper-fab-scroll-to-top for-element="short-with-long-content" pin-bottom-right></grass-paper-fab-scroll-to-top>
+</body>
+
+</html>

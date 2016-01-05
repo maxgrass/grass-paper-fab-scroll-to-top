@@ -13,31 +13,94 @@
 
 <dom-module name="grass-paper-fab-scroll-to-top">
     <style>
+        .mg-bottomright {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
     </style>
     <template>
         <paper-fab id="fab" icon="expand-less" title="To top"></paper-fab>
     </template>
     <script>
         var _duration = 500,
-            scrollTop = function(evt) {
-                var scrollStep = -window.scrollY / (_duration / 15),
+            _scrollElement = window,
+            _scrollTop = function(evt) {
+                var isWindow = window === _scrollElement,
+                    getScrollY = function() {
+                        return isWindow ? _scrollElement.scrollY : _scrollElement.scrollTop;
+                    },
+                    scrollStep = -getScrollY() / (_duration / 15),
+                    doScrollStep = function() {
+                        if (isWindow) {
+                            _scrollElement.scrollBy(0, scrollStep);
+                        } else {
+                            _scrollElement.scrollTop += scrollStep;
+                        }
+                    },
                     scrollInterval = setInterval(function() {
-                        if (window.scrollY != 0) {
-                            window.scrollBy(0, scrollStep);
+                        if (getScrollY() != 0) {
+                            doScrollStep();
                         } else {
                             clearInterval(scrollInterval);
                         }
                     }, 15);
-
             };
 
         Polymer({
             is: 'grass-paper-fab-scroll-to-top',
+            factoryImpl: function(options) {
+                var _options = options || {};
+                if (_options.duration) {
+                    this.duration = _options.duration;
+                }
+                if (_options.forElement) {
+                    this._setScrollElement(_options.forElement);
+                }
+            },
+            attached: function() {
+                this._setScrollElement(this.forElement);
+                if (this.pinBottomRight) {
+                    this.$.fab.classList.add('mg-bottomright');
+                }
+            },
+            _setScrollElement: function(scrollElementId) {
+                if (!scrollElementId || scrollElementId === 'window') {
+                    _scrollElement = window;
+                    return;
+                }
+                if (typeof scrollElementId === 'string') {
+                    _scrollElement = document.getElementById(scrollElementId);
+                }
+            },
             scrollToTop: function(evt) {
-                scrollTop(evt);
+                _scrollTop(evt);
             },
             listeners: {
                 tap: 'scrollToTop'
+            },
+            properties: {
+                pinBottomRight: {
+                    notify: true,
+                    type: Boolean,
+                },
+                forElement: {
+                    reflectToAttribute: true,
+                    notify: true,
+                    type: String,
+                },
+                duration: {
+                    reflectToAttribute: true,
+                    notify: true,
+                    type: Number,
+                    value: _duration
+                }
+            },
+            durationChanged: function(newVal, oldVal) {
+                _duration = newVal;
+            },
+            fotElementChanged: function(newVal, oldVal) {
+                this._setScrollElement(newVal);
             }
         });
     </script>
