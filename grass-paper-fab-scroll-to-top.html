@@ -23,84 +23,143 @@
         <paper-fab id="fab" icon="expand-less" title="To top"></paper-fab>
     </template>
     <script>
-        var _duration = 500,
+        var _self,
             _scrollElement = window,
-            _scrollTop = function(evt) {
-                var isWindow = window === _scrollElement,
-                    getScrollY = function() {
-                        return isWindow ? _scrollElement.scrollY : _scrollElement.scrollTop;
-                    },
-                    scrollStep = -getScrollY() / (_duration / 15),
+            _bottomRightClass = 'mg-bottomright',
+            _isWindow = window === _scrollElement,
+            _hide = function() {
+                if (!_self.alwaysShow) {
+                    _self.style.display = 'none';
+                }
+            },
+            _show = function(){
+                if (_self.style.display === 'none') {
+                    _self.style.display = 'initial';
+                }
+            },
+            _onScroll = function() {
+                _getScrollY() === 0 ? _hide() : _show();
+            },
+            _getScrollY = function() {
+                return _isWindow ? _scrollElement.scrollY : _scrollElement.scrollTop;
+            },
+            _scrollToTop = function(evt) {
+                var scrollStep = -_getScrollY() / (_self.duration / 15),
                     doScrollStep = function() {
-                        if (isWindow) {
+                        if (_isWindow) {
                             _scrollElement.scrollBy(0, scrollStep);
                         } else {
                             _scrollElement.scrollTop += scrollStep;
                         }
                     },
                     scrollInterval = setInterval(function() {
-                        if (getScrollY() != 0) {
+                        if (_getScrollY() != 0) {
                             doScrollStep();
                         } else {
                             clearInterval(scrollInterval);
+                            _hide();
                         }
                     }, 15);
             };
 
         Polymer({
             is: 'grass-paper-fab-scroll-to-top',
-            factoryImpl: function(options) {
-                var _options = options || {};
-                if (_options.duration) {
-                    this.duration = _options.duration;
-                }
-                if (_options.forElement) {
-                    this._setScrollElement(_options.forElement);
-                }
-            },
-            attached: function() {
-                this._setScrollElement(this.forElement);
-                if (this.pinBottomRight) {
-                    this.$.fab.classList.add('mg-bottomright');
-                }
-            },
-            _setScrollElement: function(scrollElementId) {
-                if (!scrollElementId || scrollElementId === 'window') {
-                    _scrollElement = window;
-                    return;
-                }
-                if (typeof scrollElementId === 'string') {
-                    _scrollElement = document.getElementById(scrollElementId);
-                }
-            },
-            scrollToTop: function(evt) {
-                _scrollTop(evt);
-            },
             listeners: {
                 tap: 'scrollToTop'
             },
             properties: {
+                alwaysShow: {
+                    notify: true,
+                    type: Boolean,
+                    value: false,
+                    observer: '_alwaysShowChanged'
+                },
                 pinBottomRight: {
                     notify: true,
                     type: Boolean,
+                    value: true,
+                    observer: '_pinBottomRightChanged'
                 },
                 forElement: {
                     reflectToAttribute: true,
                     notify: true,
                     type: String,
+                    value: 'window',
+                    observer: '_forElementChanged'
                 },
                 duration: {
                     reflectToAttribute: true,
                     notify: true,
                     type: Number,
-                    value: _duration
+                    value: 500,
                 }
             },
-            durationChanged: function(newVal, oldVal) {
-                _duration = newVal;
+            //
+            // Programmatic constructor support
+            //
+            factoryImpl: function(options) {
+                var _options = options || {};
+                if (_options.duration) {
+                    this.duration = _options.duration;
+                }
+                if (_options.alwaysShow) {
+                    this.alwaysShow = true;
+                }
+                if (_options.forElement) {
+                    this._setScrollElement(_options.forElement);
+                }
             },
-            fotElementChanged: function(newVal, oldVal) {
+            //
+            // Element initialization
+            //
+            created: function(){
+                _self = this;
+            },
+            attached: function() {
+                this._setScrollElement(this.forElement);
+
+                if (this.pinBottomRight) {
+                    this.$.fab.classList.add(_bottomRightClass);
+                }
+
+                this.alwaysShow ? _show() : _onScroll();
+            },
+            //
+            // PRIVATE
+            //
+            _setScrollElement: function(scrollElementId) {
+                // clean up handler for current/previous element
+                _scrollElement.removeEventListener("scroll", _onScroll);
+
+                if (!scrollElementId || scrollElementId === 'window') {
+                    _isWindow = true;
+                    _scrollElement = window;
+                } else if (typeof scrollElementId === 'string') {
+                    _isWindow = false;
+                    _scrollElement = document.getElementById(scrollElementId);
+                }
+
+                _scrollElement.addEventListener("scroll", _onScroll);
+
+                _onScroll();
+            },
+            //
+            // OBSERVERS
+            //
+            _alwaysShowChanged: function(newVal, oldVal) {
+                newVal ? _show() : _onScroll();
+            },
+            _forElementChanged: function(newVal, oldVal) {
                 this._setScrollElement(newVal);
+            },
+            _pinBottomRightChanged: function(newVal, oldVal){
+                this.$.fab.classList[newVal ? 'add' : 'remove'](_bottomRightClass);
+            },
+            //
+            // PUBLIC
+            //
+            scrollToTop: function(evt) {
+                _scrollToTop(evt);
             }
         });
     </script>
