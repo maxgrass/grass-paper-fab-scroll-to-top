@@ -3,6 +3,14 @@ grass-paper-fab-scroll-to-top
 
 Functions as a FAB with icon arrow.
 
+Demo:
+http://maxgrass.github.io/grass-paper-fab-scroll-to-top/components/grass-paper-fab-scroll-to-top/
+
+
+Install Bower:
+`bower i --save grass-paper-fab-scroll-to-top`
+
+
 ![alt tag](img/screenshot.png)
 
 Example 1 - use as a normal page element - not bound to a specific container (uses "window") or pinned on the page:
