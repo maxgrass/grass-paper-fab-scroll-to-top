@@ -5,6 +5,7 @@ Functions as a FAB with icon arrow.
 
 Documentation:
 http://maxgrass.github.io/grass-paper-fab-scroll-to-top/components/grass-paper-fab-scroll-to-top/
+
 Demo:
 http://maxgrass.github.io/grass-paper-fab-scroll-to-top/components/grass-paper-fab-scroll-to-top/demo/index.html
 
