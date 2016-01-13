@@ -3,9 +3,10 @@ grass-paper-fab-scroll-to-top
 
 Functions as a FAB with icon arrow.
 
-Demo:
+Documentation:
 http://maxgrass.github.io/grass-paper-fab-scroll-to-top/components/grass-paper-fab-scroll-to-top/
-
+Demo:
+http://maxgrass.github.io/grass-paper-fab-scroll-to-top/components/grass-paper-fab-scroll-to-top/demo/index.html
 
 Install Bower:
 `bower i --save grass-paper-fab-scroll-to-top`
