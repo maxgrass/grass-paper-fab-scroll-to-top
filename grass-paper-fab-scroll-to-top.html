@@ -72,6 +72,7 @@
                  * `alwaysShow` shows the button even if the scroll element is on the top
                  */
                 alwaysShow: {
+                    reflectToAttribute: true,
                     notify: true,
                     type: Boolean,
                     value: false,
@@ -117,7 +118,7 @@
                 if (_options.duration) {
                     this.duration = _options.duration;
                 }
-                if (_options.alwaysShow) {
+                if (_options.alwaysShow !== false) {
                     this.alwaysShow = true;
                 }
                 if (_options.forElement) {
@@ -149,14 +150,22 @@
             */
             _setScrollElement: function(scrollElementId) {
                 // clean up handler for current/previous element
-                _scrollElement.removeEventListener("scroll", _onScroll);
+                if(_scrollElement){
+                    _scrollElement.removeEventListener("scroll", _onScroll);
+                }
 
-                if (!scrollElementId || scrollElementId === 'window') {
-                    _isWindow = true;
-                    _scrollElement = window;
-                } else if (typeof scrollElementId === 'string') {
+                if (typeof scrollElementId === 'string') {
                     _isWindow = false;
                     _scrollElement = document.getElementById(scrollElementId);
+                    if(!_scrollElement){
+                        this.forElement = undefined;
+                        console.warn('no element with id: ' + scrollElementId);
+                    }
+                }
+
+                if (!_scrollElement) {
+                    _isWindow = true;
+                    _scrollElement = window;
                 }
 
                 _scrollElement.addEventListener("scroll", _onScroll);
@@ -167,6 +176,7 @@
             // OBSERVERS
             //
             _alwaysShowChanged: function(newVal, oldVal) {
+                this.alwaysShow = !!newVal;
                 newVal ? _show() : _onScroll();
             },
             _forElementChanged: function(newVal, oldVal) {
