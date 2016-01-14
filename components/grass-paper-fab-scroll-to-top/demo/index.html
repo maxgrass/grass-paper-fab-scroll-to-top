@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <base href="../" target="_blank">
+    <title>grass-paper-fab-scroll-to-top Info</title>
+
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="../paper-button/paper-button.html" />
+    <link rel="import" href="../paper-checkbox/paper-checkbox.html" />
+    <link rel="import" href="../paper-styles/typography.html" />
+    <link rel="import" href="grass-paper-fab-scroll-to-top.html" />
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Roboto;
+        }
+
+        p {
+            padding: 50px;
+        }
+
+        .short-with-long-content {
+            max-height: 200px;
+            overflow: scroll;
+        }
+
+        paper-button {
+            width: 200px;
+        }
+    </style>
+    <div id="short-with-long-content" class="short-with-long-content">
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+    </div>
+    <div id="short-with-long-content2" class="short-with-long-content">
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+        <p>BLA</p>
+    </div>
+
+    <br/>
+    <paper-checkbox id="alwaysShow">Always show</paper-checkbox>
+    <paper-checkbox id="pinBottomRight" checked>Pin to bottom right</paper-checkbox>
+    <paper-button raised onclick="paperSTT.forElement = 'short-with-long-content'">Assign to top container</paper-button>
+    <paper-button raised onclick="paperSTT.forElement = 'short-with-long-content2'">Assign to bottom container</paper-button>
+
+    <grass-paper-fab-scroll-to-top for-element="short-with-long-content" pin-bottom-right></grass-paper-fab-scroll-to-top>
+    <script>
+        window.paperSTT = document.querySelector('grass-paper-fab-scroll-to-top');
+        document.querySelector('#alwaysShow').addEventListener('change', function(evt) {
+            paperSTT.alwaysShow = this.checked;
+        });
+        document.querySelector('#pinBottomRight').addEventListener('change', function(evt) {
+            paperSTT.pinBottomRight = this.checked;
+        });
+    </script>
+</body>
+
+</html>

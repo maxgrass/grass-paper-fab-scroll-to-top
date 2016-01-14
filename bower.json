@@ -1,0 +1,31 @@
+{
+  "name": "grass-paper-fab-scroll-to-top",
+  "version": "0.7.0",
+  "description": "Polymer scroll to top button (FAB)",
+  "authors": [
+    "Max Grass"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "layout"
+  ],
+  "main": "grass-paper-fab-scroll-to-top.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "paper-fab": "PolymerElements/paper-fab#^1.1.2",
+    "iron-icons": "PolymerElements/iron-icons#~1.0.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maxgrass/grass-paper-fab-scroll-to-top.git"
+  },
+  "license": "MIT",
+  "ignore": [],
+  "homepage": "https://github.com/maxgrass/grass-paper-fab-scroll-to-top",
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.5",
+    "paper-checkbox": "PolymerElements/paper-checkbox#~1.1.0",
+    "paper-styles": "PolymerElements/paper-styles#~1.1.2"
+  }
+}
